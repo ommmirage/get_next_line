@@ -1,0 +1,7 @@
+.DS_Dtore
+.idea/
+*.o
+a.out
+test.c
+test/
+cmake-build-debug/
