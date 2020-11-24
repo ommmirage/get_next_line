@@ -19,6 +19,6 @@
 
 int		get_next_line(int fd, char **line);
 int		str_len(const char *str);
-char	*get_new_line(char *src, char **tail, int len, int *res);
+char	*get_new_line(char *src, char **tail, int src_len, int *res);
 
 #endif

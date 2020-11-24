@@ -23,7 +23,7 @@ int		str_len(const char *str)
 	return (len);
 }
 
-int 	count_line_len(const char *src, int len)
+int 	len_to_endl(const char *src, int len)
 {
 	int res;
 
@@ -55,13 +55,13 @@ int 	write_tail(char **tail, char *src, char *new_line, int tail_len)
 	return (1);
 }
 
-char	*get_new_line(char *src, char **tail, int len, int *res)
+char	*get_new_line(char *src, char **tail, int src_len, int *res)
 {
 	char	*new_line;
 	int 	line_len;
 	int 	i;
 
-	line_len = count_line_len(src, len);
+	line_len = len_to_endl(src, src_len);
 	if (!(new_line = (char *)malloc( sizeof(char) * (line_len + 1))))
 	{
 		*res = -1;
@@ -74,7 +74,7 @@ char	*get_new_line(char *src, char **tail, int len, int *res)
 	if (*src == '\n')
 	{
 		*res = 1;
-		if (!write_tail(tail, src, new_line, len - line_len))
+		if (!write_tail(tail, src, new_line, src_len - line_len))
 		{
 			free(new_line);
 			*res = -1;

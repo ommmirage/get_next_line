@@ -43,11 +43,11 @@ char 	*join_strings(const char *s1, const char *s2)
 	return (res2);
 }
 
-void 	cat_line(char **line, char *src, char **tail, int len, int *res)
+void 	cat_line(char **line, char *src, char **tail, int src_len, int *res)
 {
 	char	*new_line;
 
-	if (!(new_line = get_new_line(src, tail, len, res)))
+	if (!(new_line = get_new_line(src, tail, src_len, res)))
 	{
 		*res = -1;
 		return ;
