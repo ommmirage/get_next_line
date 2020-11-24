@@ -14,6 +14,17 @@
 #include "get_next_line.h"
 #include <stdlib.h>
 
+int 	free_tail_res(char *tail, int *res, int need_to_free_tail)
+{
+	int r;
+
+	r = *res;
+	free(res);
+	if (tail && need_to_free_tail)
+		free(tail);
+	return (r);
+}
+
 char 	*join_strings(const char *s1, const char *s2)
 {
 	char	*res;
@@ -63,12 +74,13 @@ int		get_next_line(int fd, char **line)
 	if (tail)
 		cat_line(line, tail, &tail, str_len(tail), res);
 	if (*res == 1 || *res == -1)
-		return (*res);
+		return (free_tail_res(tail, res, 1));
 	while ((len = read(fd, buf, BUFFER_SIZE)))
 	{
 		cat_line(line, buf, &tail, len, res);
 		if (*res == 1 || *res == -1)
-			return (*res);
+			return (free_tail_res(tail, res, 0));
 	}
+	free_tail_res(tail, res, 1);
 	return (0);
 }

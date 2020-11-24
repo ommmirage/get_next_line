@@ -35,17 +35,23 @@ int 	count_line_len(const char *src, int len)
 
 int 	write_tail(char **tail, char *src, char *new_line, int tail_len)
 {
-	free(*tail);
-	if (!(*tail = malloc(str_len(src))))
+	int i;
+
+	if (*tail)
+		free(*tail);
+	if (!(*tail = malloc(str_len(src) + 1)))
 	{
 		free(new_line);
 		return (0);
 	}
-	while (tail_len--)
-	{
-		**tail = *src++;
-		(*tail)++;
-	}
+	i = 0;
+	/*
+	 * пропускаем первый '/n'
+	 */
+	src++;
+	while (i < tail_len)
+		(*tail)[i++] = *src++;
+	(*tail)[i] = 0;
 	return (1);
 }
 
@@ -56,7 +62,7 @@ char	*get_new_line(char *src, char **tail, int len, int *res)
 	int 	i;
 
 	line_len = count_line_len(src, len);
-	if (!(new_line = malloc( line_len + 1)))
+	if (!(new_line = (char *)malloc( sizeof(char) * (line_len + 1))))
 	{
 		*res = -1;
 		return (NULL);
@@ -66,13 +72,14 @@ char	*get_new_line(char *src, char **tail, int len, int *res)
 		new_line[i++] = *src++;
 	new_line[i] = 0;
 	if (*src == '\n')
+	{
 		*res = 1;
-	else
 		if (!write_tail(tail, src, new_line, len - line_len))
-			{
-				free(new_line);
-				*res = -1;
-				return (NULL);
-			}
+		{
+			free(new_line);
+			*res = -1;
+			return (NULL);
+		}
+	}
 	return (new_line);
 }
