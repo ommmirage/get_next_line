@@ -6,18 +6,28 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 int main()
 {
 	int		fd;
+	int 	fd_out;
 	char	*line;
 
-	fd = open("C:/c/get_next_line/test.txt", O_RDONLY);
+//	fd = open("/Users/dechanel/get_next_line/test.txt", O_RDONLY);
+//	fd = open("/Users/dechanel/GNL_lover/test_files_GNL/test_file2", O_RDONLY);
+	fd = open("/Users/dechanel/get_next_line/42TESTERS-GNL/files/empty_lines", O_RDONLY);
+	fd_out = open("/Users/dechanel/get_next_line/out", O_RDWR | O_CREAT |  O_TRUNC, 0644);
 	while (get_next_line(fd, &line))
 	{
-		printf("%s\n", line);
+		printf("line: %s\n", line);
+//		write(fd_out, line, str_len(line));
+//		write(fd_out, "\n", 1);
 		free(line);
 	}
-	printf("%s\n", line);
+	printf("%s", line);
+	write(fd_out, line, str_len(line));
 	free(line);
+	close(fd);
+	close(fd_out);
 }

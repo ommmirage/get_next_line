@@ -14,12 +14,13 @@
 #include "get_next_line.h"
 #include <stdlib.h>
 
-int 	free_tail_res(char *tail, int *res, int need_to_free_tail)
+int 	free_all(char *tail, int *res, char *buf, int need_to_free_tail)
 {
 	int r;
 
 	r = *res;
 	free(res);
+	free(buf);
 	if (tail && need_to_free_tail)
 		free(tail);
 	return (r);
@@ -62,11 +63,12 @@ void 	cat_line(char **line, char *src, char **tail, int src_len, int *res)
 
 int		get_next_line(int fd, char **line)
 {
-	char		buf[BUFFER_SIZE];
+	char		*buf;
 	int			len;
 	static char	*tail = 0;
 	int 		*res;
 
+	buf = malloc(BUFFER_SIZE + 1);
 	*line = malloc(sizeof(char));
 	**line = 0;
 	res = malloc(sizeof(int));
@@ -74,13 +76,16 @@ int		get_next_line(int fd, char **line)
 	if (tail)
 		cat_line(line, tail, &tail, str_len(tail), res);
 	if (*res == 1 || *res == -1)
-		return (free_tail_res(tail, res, 1));
+		return (free_all(tail, res, buf, !*tail));
 	while ((len = read(fd, buf, BUFFER_SIZE)))
 	{
+		buf[len] = 0;
 		cat_line(line, buf, &tail, len, res);
+		free(buf);
+		buf = malloc(BUFFER_SIZE + 1);
 		if (*res == 1 || *res == -1)
-			return (free_tail_res(tail, res, 0));
+			return (free_all(tail, res, buf, 0));
 	}
-	free_tail_res(tail, res, 1);
+	free_all(tail, res, buf, *tail);
 	return (0);
 }

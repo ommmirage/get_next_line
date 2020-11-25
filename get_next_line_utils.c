@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "get_next_line.h"
 
 int		str_len(const char *str)
 {
@@ -28,7 +29,7 @@ int 	len_to_endl(const char *src, int len)
 	int res;
 
 	res = 0;
-	while (*src++ != '\n' && len--)
+	while (len-- && *src++ != '\n')
 		res++;
 	return (res);
 }
@@ -39,7 +40,8 @@ int 	write_tail(char **tail, char *src, char *new_line, int tail_len)
 
 	if (*tail)
 		free(*tail);
-	if (!(*tail = malloc(str_len(src) + 1)))
+	*tail = malloc(tail_len + 1);
+	if (!*tail)
 	{
 		free(new_line);
 		return (0);
