@@ -10,13 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
+#include "get_next_line.h"
+#include <stdlib.h>
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+char	*str_dub(char *src, int start, int end)
+{
+	char	*dst;
 
-char	*str_dub(char *src, int start, int end);
-
-#endif
+	dst = malloc(end - start + 1);
+	if (!dst)
+		return (NULL);
+	while (*src)
+		*dst++ = *src++;
+	*dst = 0;
+	return (dst);
+}
