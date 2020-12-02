@@ -13,17 +13,52 @@
 #include "get_next_line.h"
 #include <stdlib.h>
 
-char	*str_dub(char *src, int start, int end)
+int		str_len(const char *str)
+{
+	int len;
+
+	len = 0;
+	while (*str++)
+		len++;
+	return (len);
+}
+
+char	*str_dub(const char *src, int start, int end)
 {
 	char	*dst;
+	int 	i;
 
-	dst = malloc(end - start + 1);
+	dst = malloc(BUFFER_SIZE + 1);
 	if (!dst)
 		return (NULL);
-	while (*src)
-		*dst++ = *src++;
-	*dst = 0;
+	i = 0;
+	while (start < end)
+		dst[i++] = src[start++];
+	dst[i] = 0;
 	return (dst);
+}
+
+char	*str_join(char *s1, char *s2)
+{
+	char	*res;
+	char	*res2;
+	int		i;
+
+	if (!s1 || !s2)
+		return (NULL);
+	if (!(res = malloc((str_len(s1) + str_len(s2) + 1) * sizeof(char))))
+		return (NULL);
+	res2 = res;
+	i = 0;
+	while (s1[i])
+		*res++ = s1[i++];
+	free(s1);
+	i = 0;
+	while (s2[i])
+		*res++ = s2[i++];
+	free(s2);
+	*res = 0;
+	return (res2);
 }
 
 char	*cache_dub(char *src, int start)
