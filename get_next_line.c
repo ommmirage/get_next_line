@@ -19,35 +19,40 @@ int endl_in_str(const char *str)
 	int i;
 
 	i = 0;
-	while (str[i] && (str[i] != '\n'))
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (i);
 		i++;
-	return (i);
+	}
+	return (-1);
 }
 
-void	save_cache(char **cache, const char *src, int start)
+int	save_cache(char **cache, const char *src, int start)
 {
 	int i;
-
+	
 	i = 0;
 	while (src[start])
 		(*cache)[i++] = src[start++];
 	(*cache)[i] = 0;
+	return (1);
 }
 
 int	process_cache(char **cache, char **line)
 {
-	if (endl_in_str(*cache))
-	{
-		if (!(*line = str_dub(*cache, 0, endl_in_str(*cache))))
-			return (-1);
-		save_cache(cache, *cache, endl_in_str(*cache) + 1);
-	}
-	else
+	if (endl_in_str(*cache) == -1)
 	{
 		if (!(*line = str_dub(*cache, 0, BUFFER_SIZE)))
 			return (-1);
 		**cache = 0;
 		return (0);
+	}
+	else
+	{
+		if (!(*line = str_dub(*cache, 0, endl_in_str(*cache))))
+			return (-1);
+		save_cache(cache, *cache, endl_in_str(*cache) + 1);
 	}
 	return (1);
 }
@@ -58,12 +63,10 @@ int	get_next_line(int fd, char **line)
 	static char *cache;
 	int 		res;
 
+	*line = malloc(1);
+	**line = 0;
 	if (!cache)
-	{
 		cache = malloc(BUFFER_SIZE);
-		*line = malloc(1);
-		**line = 0;
-	}
 	else
 	{
 		res = process_cache(&cache, line);
@@ -71,14 +74,13 @@ int	get_next_line(int fd, char **line)
 			return (res);
 	}
 	while (read(fd, buf, BUFFER_SIZE))
-		if (endl_in_str(buf))
+		if (endl_in_str(buf) == -1)
+			*line = str_join(*line, str_dub(buf, 0, BUFFER_SIZE));
+		else
 		{
 			if (!(*line = str_join(*line, str_dub(buf, 0, endl_in_str(buf)))))
 				return (-1);
-			save_cache(&cache, buf, endl_in_str(buf) + 1);
-			return (1);
+			return (save_cache(&cache, buf, endl_in_str(buf) + 1));
 		}
-		else
-			*line = str_join(*line, str_dub(buf, 0, BUFFER_SIZE));
 	return (0);
 }
