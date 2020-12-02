@@ -25,3 +25,19 @@ char	*str_dub(char *src, int start, int end)
 	*dst = 0;
 	return (dst);
 }
+
+char	*cache_dub(char *src, int start)
+{
+	char	*dst;
+	int 	i;
+
+	dst = malloc(BUFFER_SIZE - start + 1);
+	if (!dst)
+		return (NULL);
+	i = 0;
+	while (src[i])
+		*dst++ = src[i++];
+	free(src);
+	*dst = 0;
+	return (dst);
+}

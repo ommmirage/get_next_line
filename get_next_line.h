@@ -18,5 +18,6 @@
 # define GET_NEXT_LINE_H
 
 char	*str_dub(char *src, int start, int end);
+char	*cache_dub(char *src, int start);
 
 #endif

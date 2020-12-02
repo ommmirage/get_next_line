@@ -60,7 +60,7 @@ int	get_next_line(int fd, char **line)
 		if (endl_in_str(buf))
 		{
 			*line = str_dub(buf, 0, endl_in_str(buf));
-			cache = str_dub(cache, endl_in_str(cache) + 1, BUFFER_SIZE);
+			cache = cache_dub(cache, endl_in_str(cache) + 1);
 		}
 	}
 }
