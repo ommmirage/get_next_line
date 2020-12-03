@@ -17,8 +17,6 @@ int		str_len(const char *str)
 {
 	int len;
 
-	if (str == NULL)
-		return (0);
 	len = 0;
 	while (*str++)
 		len++;
@@ -49,13 +47,10 @@ char	*str_join(char *s1, char *s2)
 	if (!(res = malloc((str_len(s1) + str_len(s2) + 1) * sizeof(char))))
 		return (NULL);
 	res2 = res;
-	if (s1 != NULL)
-	{
-		i = 0;
-		while (s1[i])
-			*res++ = s1[i++];
-		free(s1);
-	}
+	i = 0;
+	while (s1[i])
+		*res++ = s1[i++];
+	free(s1);
 	i = 0;
 	while (s2[i])
 		*res++ = s2[i++];

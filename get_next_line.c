@@ -63,7 +63,8 @@ int	get_next_line(int fd, char **line)
 	static char *cache;
 	int 		res;
 
-	*line = 0;
+	*line = malloc(1); // лик
+	**line = 0;
 	if (!cache)
 		cache = malloc(BUFFER_SIZE);
 	else
