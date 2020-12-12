@@ -6,6 +6,16 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+int 	new_endl_in_buf(const char *buf, int endl)
+{
+	while (buf[++endl])
+	{
+		if (buf[endl] == '\n')
+			return (1);
+	}
+	return (0);
+}
+
 char	*str_before_endl(const char *src, int *endl)
 {
 	char	*res;
@@ -13,19 +23,18 @@ char	*str_before_endl(const char *src, int *endl)
 
 	res = malloc(BUFFER_SIZE + 1);
 	i = 0;
-	while (src[i])
+	while (src[++(*endl)])
 	{
-		if (src[i] == '\n')
+		if (src[*endl] == '\n')
 		{
-			*endl = i;
 			res[i] = 0;
 			return (res);
 		}
-		res[i] = src[i];
+		res[i] = src[*endl];
 		i++;
 	}
-	*endl = i;
 	res[i] = 0;
+	*endl = -1;
 	return (res);
 }
 
