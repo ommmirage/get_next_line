@@ -11,14 +11,13 @@
 /* ************************************************************************** */
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
+# define BUFFER_SIZE 2
 #endif
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
 int		get_next_line(int fd, char **line);
-char	*str_join(char *str1, char *str2);
-char	*str_before_endl(const char *s, int *endl);
+int		str_len(const char *str);
 
 #endif
