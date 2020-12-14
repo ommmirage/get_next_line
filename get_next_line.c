@@ -1,6 +1,14 @@
-//
-// Created by mirage on 12.12.2020.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dechanel <ommmirage@gmail.com>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/28 14:57:10 by dechanel          #+#    #+#             */
+/*   Updated: 2020/10/28 15:06:52 by dechanel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
@@ -21,25 +29,34 @@ char	*str_plus_char(char *line, char c)
 	return (nl);
 }
 
+int		clear_buf(char (*buf)[BUFFER_SIZE])
+{
+	int i;
+
+	i = 0;
+	while (i < BUFFER_SIZE)
+		(*buf)[i++] = 0;
+	return (1);
+}
+
 int		get_next_line(int fd, char **line)
 {
-	static char buf[BUFFER_SIZE + 1];
-	static int 	endl = -1;
+	static char	buf[BUFFER_SIZE];
+	static int	endl = -1;
 
 	*line = malloc(1);
 	**line = 0;
 	if (endl != -1)
-		while (buf[++endl])
+		while (++endl < BUFFER_SIZE && buf[endl])
 		{
 			if (buf[endl] == '\n')
 				return (1);
 			*line = str_plus_char(*line, buf[endl]);
 		}
-	while (read(fd, buf, BUFFER_SIZE))
+	while (clear_buf(&buf) && read(fd, buf, BUFFER_SIZE))
 	{
 		endl = -1;
-		buf[BUFFER_SIZE] = 0;
-		while (buf[++endl])
+		while (++endl < BUFFER_SIZE && buf[endl])
 		{
 			if (buf[endl] == '\n')
 				return (1);
