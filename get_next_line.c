@@ -14,7 +14,17 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-char	*str_plus_char(char *line, char c)
+static int	str_len(const char *str)
+{
+	int len;
+
+	len = 0;
+	while (*str++)
+		len++;
+	return (len);
+}
+
+static char	*str_plus_char(char *line, char c)
 {
 	char	*nl;
 	int		i;
@@ -29,7 +39,7 @@ char	*str_plus_char(char *line, char c)
 	return (nl);
 }
 
-int		clear_buf(char (*buf)[BUFFER_SIZE])
+static int	clear_buf(char (*buf)[BUFFER_SIZE])
 {
 	int i;
 
@@ -39,7 +49,7 @@ int		clear_buf(char (*buf)[BUFFER_SIZE])
 	return (1);
 }
 
-int		get_next_line(int fd, char **line)
+int			get_next_line(int fd, char **line)
 {
 	static char	buf[BUFFER_SIZE];
 	static int	endl = -1;
