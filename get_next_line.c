@@ -49,20 +49,27 @@ static int	clear_buf(char (*buf)[BUFFER_SIZE])
 	return (1);
 }
 
+static void add_symbols_before_endl(char **line, int *endl, char *buf)
+{
+	while (++(*endl) < BUFFER_SIZE && buf[*endl])
+	{
+		if (buf[*endl] == '\n')
+			return (1);
+		*line = str_plus_char(*line, buf[endl]);
+	}
+}
+
 int			get_next_line(int fd, char **line)
 {
 	static char	buf[BUFFER_SIZE];
 	static int	endl = -1;
 
+	if (BUFFER_SIZE < 1)
+		return (-1);
 	*line = malloc(1);
 	**line = 0;
 	if (endl != -1)
-		while (++endl < BUFFER_SIZE && buf[endl])
-		{
-			if (buf[endl] == '\n')
-				return (1);
-			*line = str_plus_char(*line, buf[endl]);
-		}
+		add_symbols_before_endl(line, &endl, buf);
 	while (clear_buf(&buf) && read(fd, buf, BUFFER_SIZE))
 	{
 		endl = -1;
