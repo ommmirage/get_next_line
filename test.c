@@ -33,12 +33,12 @@ int main()
 	while (get_next_line(fd, &line))
 	{
 		printf("line: %s\n", line);
-//		write(fd_out, line, str_len(line));
+//		write(fd_out, line, ft_str_len(line));
 //		write(fd_out, "\n", 1);
 		free(line);
 	}
 	printf("line: %s", line);
-//	write(fd_out, line, str_len(line));
+//	write(fd_out, line, ft_str_len(line));
 	free(line);
 	close(fd);
 //	close(fd_out);

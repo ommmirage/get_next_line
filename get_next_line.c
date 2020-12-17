@@ -19,7 +19,7 @@ static char	*str_plus_char(char *line, char c)
 	char	*nl;
 	int		i;
 
-	nl = malloc(str_len(line) + 2);
+	nl = malloc(ft_str_len(line) + 2);
 	i = -1;
 	while (line[++i])
 		nl[i] = line[i];

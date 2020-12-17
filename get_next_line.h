@@ -18,6 +18,6 @@
 # endif
 
 int	get_next_line(int fd, char **line);
-int	str_len(const char *str);
+int	ft_str_len(const char *str);
 
 #endif
