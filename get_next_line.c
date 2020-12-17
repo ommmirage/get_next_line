@@ -14,16 +14,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-static int	str_len(const char *str)
-{
-	int len;
-
-	len = 0;
-	while (*str++)
-		len++;
-	return (len);
-}
-
 static char	*str_plus_char(char *line, char c)
 {
 	char	*nl;
@@ -49,36 +39,38 @@ static int	clear_buf(char (*buf)[BUFFER_SIZE])
 	return (1);
 }
 
-static void add_symbols_before_endl(char **line, int *endl, char *buf)
+static int add_symbols_before_endl(char **line, char *buf, int *endl)
 {
 	while (++(*endl) < BUFFER_SIZE && buf[*endl])
 	{
 		if (buf[*endl] == '\n')
 			return (1);
-		*line = str_plus_char(*line, buf[endl]);
+		*line = str_plus_char(*line, buf[*endl]);
 	}
+	return (0);
 }
 
 int			get_next_line(int fd, char **line)
 {
 	static char	buf[BUFFER_SIZE];
 	static int	endl = -1;
+	int 		read_result;
 
-	if (BUFFER_SIZE < 1)
-		return (-1);
 	*line = malloc(1);
 	**line = 0;
 	if (endl != -1)
-		add_symbols_before_endl(line, &endl, buf);
-	while (clear_buf(&buf) && read(fd, buf, BUFFER_SIZE))
+		if (add_symbols_before_endl(line, buf, &endl))
+			return (1);
+	while (clear_buf(&buf) && (read_result = read(fd, buf, BUFFER_SIZE)))
 	{
-		endl = -1;
-		while (++endl < BUFFER_SIZE && buf[endl])
+		if (read_result == -1)
 		{
-			if (buf[endl] == '\n')
-				return (1);
-			*line = str_plus_char(*line, buf[endl]);
+			free(*line);
+			return (-1);
 		}
+		endl = -1;
+		if (add_symbols_before_endl(line, buf, &endl))
+			return (1);
 	}
 	return (0);
 }
