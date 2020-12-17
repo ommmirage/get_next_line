@@ -39,7 +39,7 @@ static int	clear_buf(char (*buf)[BUFFER_SIZE])
 	return (1);
 }
 
-static int add_symbols_before_endl(char **line, char *buf, int *endl)
+static int	add_symbols_before_endl(char **line, char *buf, int *endl)
 {
 	while (++(*endl) < BUFFER_SIZE && buf[*endl])
 	{
@@ -54,7 +54,7 @@ int			get_next_line(int fd, char **line)
 {
 	static char	buf[BUFFER_SIZE];
 	static int	endl = -1;
-	int 		read_result;
+	int			read_result;
 
 	*line = malloc(1);
 	**line = 0;
